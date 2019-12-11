@@ -9,7 +9,7 @@
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceRoot}/target/debug/pipes.exe",
-            "args": [],
+            "args": "${workspaceRoot}/target/debug/Puzzle0.csv",
             "stopAtEntry": false,
             //"cwd": "${workspaceRoot}",
             "cwd": "${workspaceRoot}\\target\\debug\\",
