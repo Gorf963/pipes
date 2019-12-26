@@ -1,3 +1,7 @@
+pub(crate) const X: usize = 5;
+pub(crate) const Y: usize = 5;
+
+
 mod pipe;
 mod loader;
 
@@ -7,7 +11,9 @@ use std::env;
 
 
 fn main() {
-    let mut field = vec![vec![]];
+
+    let mut field = [['_'; X];Y];
+    
     let mut pipes: Vec<Pipe> = Vec::new();
 
     let args: Vec<String> = env::args().collect();
@@ -22,19 +28,19 @@ fn main() {
         if !pipe.find_path(&mut field)
         {
             println!("Could not solve pipe number {}", pipe.pipe_number);
-        }
-    }
-    
-    for line in field {
-        for space in line {
-            if space==0 {
-                print!(" ");
-            } else {
-                print!("{}",space )
+        } else {
+            for j in {0..Y} {
+                for i in {0..X} {
+        
+                    print!("{}",field[i][j]);
+                }
+                println!("");
             }
         }
-        println!("");
+
     }
+
+
 
 }
 
