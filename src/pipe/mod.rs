@@ -15,13 +15,13 @@ impl StepPipe {
         y:ay,
         }
     }
-    /*
+
     fn is_empty(&mut self) -> bool {
         if self.x==-1&&self.y==-1 {return true;}
         return false;
 
     }
-    */
+
     fn len(&mut self, x:i32, y:i32) -> i32 {
         if self.x == -1 || self.y ==-1 {return (10*X)as i32;}
         return (self.x - x).abs() + (self.y - y).abs();
@@ -94,23 +94,30 @@ impl Pipe {
             //north
             if current_step.y>0 {
                 let a = field[current_step.x as usize][(current_step.y -1) as usize];
-                
-                if a==' ' || a==self.pipe_number {
+                if a==self.pipe_number && current_step.x==self.end_x && current_step.y-1==self.end_y {
                     north = StepPipe::new(current_step.x,current_step.y-1);
-                } else {
-                    north = StepPipe::new(-1,-1);
+                } else {                
+                    if a==' ' || a!=self.pipe_number {
+                        north = StepPipe::new(current_step.x,current_step.y-1);
+                    } else {
+                        north = StepPipe::new(-1,-1);
+                    }
                 }
             } else {
                 north = StepPipe::new(-1,-1);
             }
+        
             //south
-            if current_step.y < (Y) as i32 {
+            if current_step.y < (Y-1) as i32 {
                 let a = field[current_step.x as usize][(current_step.y +1) as usize];
-                
-                if a==' ' || a==self.pipe_number {
+                if a==self.pipe_number && current_step.x==self.end_x && current_step.y+1==self.end_y {
                     south = StepPipe::new(current_step.x,current_step.y+1);
-                } else {
-                    south = StepPipe::new(-1,-1);
+                } else {                
+                    if a==' ' || a!=self.pipe_number {
+                        south = StepPipe::new(current_step.x,current_step.y+1);
+                    } else {
+                        south = StepPipe::new(-1,-1);
+                    }
                 }
 
             } else {
@@ -119,11 +126,14 @@ impl Pipe {
             //east
             if current_step.x > 0 as i32 {
                 let a = field[(current_step.x -1) as usize][current_step.y as usize];
-                
-                if a==' ' || a==self.pipe_number {
+                if a==self.pipe_number && current_step.x-1==self.end_x && current_step.y==self.end_y {
                     east = StepPipe::new(current_step.x-1,current_step.y);
                 } else {
-                     east = StepPipe::new(-1,-1);
+                    if a==' ' || a!=self.pipe_number {
+                        east = StepPipe::new(current_step.x-1,current_step.y);
+                    } else {
+                        east = StepPipe::new(-1,-1);
+                    }
                 }
 
             } else {
@@ -131,13 +141,16 @@ impl Pipe {
             }
 
             //west
-            if current_step.x < (X) as i32 {
+            if current_step.x < (X-1) as i32 {
                 let a = field[(current_step.x +1) as usize][current_step.y as usize];
-                
-                if a==' ' || a==self.pipe_number {
+                if a==self.pipe_number && current_step.x+1==self.end_x && current_step.y==self.end_y {
                     west = StepPipe::new(current_step.x+1,current_step.y);
                 } else {
-                     west = StepPipe::new(-1,-1);
+                    if a==' ' || a!=self.pipe_number {
+                        west = StepPipe::new(current_step.x+1,current_step.y);
+                    } else {
+                        west = StepPipe::new(-1,-1);
+                    }
                 }
 
             } else {
@@ -150,6 +163,8 @@ impl Pipe {
             
             //set step
             current_step = path.last().cloned().unwrap();
+            if current_step.is_empty() {return false;}
+
             if current_step.x == self.end_x && current_step.y == self.end_y {
                 solved = true;
             }
@@ -169,6 +184,8 @@ fn picknext(north:&mut StepPipe, south:&mut StepPipe, east:&mut StepPipe, west:&
     let mut l = min(ln,ls);
     l = min(l,le);
     l = min(l,lw);
+    if l == (10*y) as i32 {return StepPipe::new(-1,-1);}
+
     if l==ln {return north.clone();}
     if l==ls {return south.clone();}
     if l==le {return east.clone();}
