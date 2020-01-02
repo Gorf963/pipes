@@ -28,6 +28,14 @@ fn main() {
         println!("{}",pipe.to_string());
         if !pipe.find_path(&mut field)
         {
+            for j in {0..Y} {
+                for i in {0..X} {
+        
+                    print!("{}",field[i][j]);
+                }
+                println!("");
+            }
+       
             println!("Could not solve pipe number {}", pipe.pipe_number);
             return;
         } 

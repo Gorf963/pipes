@@ -23,8 +23,9 @@ impl StepPipe {
     }
 
     fn len(&mut self, x:i32, y:i32) -> i32 {
-        if self.x == -1 || self.y ==-1 {return (10*X)as i32;}
-        return (self.x - x).abs() + (self.y - y).abs();
+        if self.x == -1 || self.y ==-1 {return (10*X*Y)as i32;}
+        //return (self.x - x).abs() + (self.y - y).abs();
+        return (self.x - x).pow(2) + (self.y - y).pow(2);
     }
     fn clone(&mut self) -> StepPipe {
         StepPipe {
@@ -97,7 +98,7 @@ impl Pipe {
                 if a==self.pipe_number && current_step.x==self.end_x && current_step.y-1==self.end_y {
                     north = StepPipe::new(current_step.x,current_step.y-1);
                 } else {                
-                    if a==' ' || a!=self.pipe_number {
+                    if a==' '{
                         north = StepPipe::new(current_step.x,current_step.y-1);
                     } else {
                         north = StepPipe::new(-1,-1);
@@ -113,7 +114,7 @@ impl Pipe {
                 if a==self.pipe_number && current_step.x==self.end_x && current_step.y+1==self.end_y {
                     south = StepPipe::new(current_step.x,current_step.y+1);
                 } else {                
-                    if a==' ' || a!=self.pipe_number {
+                    if a==' '{
                         south = StepPipe::new(current_step.x,current_step.y+1);
                     } else {
                         south = StepPipe::new(-1,-1);
@@ -129,7 +130,7 @@ impl Pipe {
                 if a==self.pipe_number && current_step.x-1==self.end_x && current_step.y==self.end_y {
                     east = StepPipe::new(current_step.x-1,current_step.y);
                 } else {
-                    if a==' ' || a!=self.pipe_number {
+                    if a==' ' {
                         east = StepPipe::new(current_step.x-1,current_step.y);
                     } else {
                         east = StepPipe::new(-1,-1);
@@ -146,7 +147,7 @@ impl Pipe {
                 if a==self.pipe_number && current_step.x+1==self.end_x && current_step.y==self.end_y {
                     west = StepPipe::new(current_step.x+1,current_step.y);
                 } else {
-                    if a==' ' || a!=self.pipe_number {
+                    if a==' ' {
                         west = StepPipe::new(current_step.x+1,current_step.y);
                     } else {
                         west = StepPipe::new(-1,-1);
@@ -163,7 +164,10 @@ impl Pipe {
             
             //set step
             current_step = path.last().cloned().unwrap();
-            if current_step.is_empty() {return false;}
+            if current_step.is_empty() {
+                return false;
+                
+            }
 
             if current_step.x == self.end_x && current_step.y == self.end_y {
                 solved = true;
@@ -184,13 +188,13 @@ fn picknext(north:&mut StepPipe, south:&mut StepPipe, east:&mut StepPipe, west:&
     let mut l = min(ln,ls);
     l = min(l,le);
     l = min(l,lw);
-    if l == (10*y) as i32 {return StepPipe::new(-1,-1);}
+    if l == (10*X*Y) as i32 {return StepPipe::new(-1,-1);}
 
-    if l==ln {return north.clone();}
+
     if l==ls {return south.clone();}
     if l==le {return east.clone();}
     if l==lw {return west.clone();}
-
+    if l==ln {return north.clone();}
     return north.clone();
     
 }
